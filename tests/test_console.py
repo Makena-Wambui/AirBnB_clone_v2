@@ -163,3 +163,37 @@ class TestConsole(unittest.TestCase):
             states = out.getvalue().strip()
             message = "stateObject not in states"
             self.assertIn(stateObject, states, message)
+
+    def test_create_with_arguments(self):
+        """
+        Test when the create method is passed arguments.
+        For example:
+        create Place city_id="0001" user_id="0001" name="My_little_house"
+        number_rooms=4 number_bathrooms=2 max_guest=10
+        price_by_night=300 latitude=37.773972 longitude=-122.431297
+
+        So if i run all Place, this object should be present,
+        plus each attribute name and value.
+        """
+        with patch("sys.stdout", output=StringIO()) as out:
+            self.HBNB.onecmd(
+                'create User email="iamakena@gmail.com" '
+                'password="ghssggwn_sgj" '
+                'first_name="Alicia" '
+                'age="40"')
+
+            userObj = out.getvalue().strip()
+
+        with patch("sys.stdout", output=StringIO()) as out:
+            self.HBNB.onecmd("all User")
+            users = out.getvalue().strip()
+            msg = "userObj not in users"
+            self.assertIn(userObj, users, msg)
+            email = "'email': 'iamakena@gmail.com'"
+            password = "'password': 'ghssggwn_sgj'"
+            first_name = "'first_name': 'Alicia'"
+            age = "'age': '40'"
+            self.assertIn(email, users)
+            self.assertIn(password, users)
+            self.assertIn(first_name, users)
+            self.assertNotIn(age, users)
