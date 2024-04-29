@@ -8,8 +8,38 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
+    def all(self, cls=None):
+        """
+        cls, ie the class name is an optional parameter.
+        if it is not provided, then the method returns the entire
+        __objects dict, which contains all models in storage.
+
+        if cls is provided, we create a dictionary, class_dict.
+        This will hold the filtered models.
+        """
+        # if cls is provided eg all State:
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+
+            # initialize a specific class_dict to empty to
+            # store insatnces for that particular class
+            class_dict = {}
+
+            # iterate over the items (key, value pairs)
+            # in the __objects dictionary
+            for k, v in FileStorage.__objects.items():
+                # For each item, check whether the type of the value
+                # matches the provided cls type.
+                if type(v) is cls:
+                    # If the type of value matches the provided cls type,
+                    # the method adds the item (key, value pair) to class_dict.
+                    class_dict[k] = v
+
+                    # then return my_dict, which contains only the
+                    # models of the specified class type.
+                    return class_dict
+
         return FileStorage.__objects
 
     def new(self, obj):
@@ -45,6 +75,23 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """
+        Add a new public instance method: def delete(self, obj=None)
+        to delete obj from __objects if it’s inside
+        if obj is equal to None, the method should not do anything.
+        """
+
+        # if obj is not None, delete it
+        if obj:
+            # extract that object's class name and id
+            # and use that to search fo it in the dictionary
+            # of objects __objects.
+            obj = f"{obj.__class__.__name__}.{obj.id}"
+
+            # then use del to delete that object.
+            del self.__objects[obj]
