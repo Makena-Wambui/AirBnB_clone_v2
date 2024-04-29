@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
+
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
@@ -22,23 +30,24 @@ class FileStorage:
             if type(cls) is str:
                 cls = eval(cls)
 
-            # initialize a specific class_dict to empty to
-            # store insatnces for that particular class
-            class_dict = {}
+            if cls and issubclass(cls, BaseModel):
+                # initialize a specific class_dict to empty to
+                # store instances for that particular class
+                class_dict = {}
 
-            # iterate over the items (key, value pairs)
-            # in the __objects dictionary
-            for k, v in FileStorage.__objects.items():
-                # For each item, check whether the type of the value
-                # matches the provided cls type.
-                if type(v) is cls:
-                    # If the type of value matches the provided cls type,
-                    # the method adds the item (key, value pair) to class_dict.
-                    class_dict[k] = v
+                # iterate over the items (key, value pairs)
+                # in the __objects dictionary
+                for k, v in self.__objects.items():
+                    # For each item, check whether the type of the value
+                    # matches the provided cls type.
+                    if type(v) is cls:
+                        # If the type of value matches the provided cls type,
+                        # the method adds the item to class_dict.
+                        class_dict[k] = v
 
-                    # then return my_dict, which contains only the
-                    # models of the specified class type.
-                    return class_dict
+                        # then return class_dict, which contains only the
+                        # models of the specified class type.
+                        return class_dict
 
         return FileStorage.__objects
 
@@ -57,14 +66,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -85,13 +86,15 @@ class FileStorage:
         to delete obj from __objects if it’s inside
         if obj is equal to None, the method should not do anything.
         """
+        if obj is None:
+            return
 
         # if obj is not None, delete it
-        if obj:
+        else:
             # extract that object's class name and id
             # and use that to search fo it in the dictionary
             # of objects __objects.
             obj = f"{obj.__class__.__name__}.{obj.id}"
 
             # then use del to delete that object.
-            del self.__objects[obj]
+            del FileStorage.__objects[obj]
