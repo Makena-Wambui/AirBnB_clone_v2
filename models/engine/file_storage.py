@@ -3,12 +3,6 @@
 
 import json
 from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 
 
 class FileStorage:
@@ -66,6 +60,13 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -90,11 +91,14 @@ class FileStorage:
             return
 
         # if obj is not None, delete it
-        else:
-            # extract that object's class name and id
-            # and use that to search fo it in the dictionary
-            # of objects __objects.
-            obj = f"{obj.__class__.__name__}.{obj.id}"
+        # extract that object's class name and id
+        # and use that to search for it in the dictionary
+        # of objects __objects.
+        obj = f"{obj.__class__.__name__}.{obj.id}"
 
+        try:
             # then use del to delete that object.
             del FileStorage.__objects[obj]
+        except KeyError:
+            # obj not found in __objects
+            print("Object not found in storage")

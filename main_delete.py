@@ -46,3 +46,17 @@ all_states = fs.all(State)
 print("All States: {}".format(len(all_states.keys())))
 for state_key in all_states.keys():
     print(all_states[state_key])
+
+
+# Create another State
+more_state = State()
+more_state.name = "Ohio"
+fs.new(more_state)
+fs.save()
+print("Another State: {}".format(more_state))
+
+# All States
+all_states = fs.all(State)
+print("All States: {}".format(len(all_states.keys())))
+for state_key in all_states.keys():
+	print(all_states[state_key])
