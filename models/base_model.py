@@ -50,15 +50,12 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-
-        dictionary.pop('_sa_instance_state', None)
+        # lets change logic for removing this key:_sa_instance_state
+        d = {k: v for k, v in self.__dict__.items()
+             if k != '_sa_instance_state'}
+        d['__class__'] = str(self.__class__name)
+        d['created_at'] = self.created_at.isoformat()
+        d['updated_at'] = self.updated_at.isoformat()
 
         return dictionary
 
