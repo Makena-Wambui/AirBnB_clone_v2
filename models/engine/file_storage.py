@@ -22,8 +22,7 @@ class FileStorage:
         # if cls is provided eg all State:
         if cls:
             if type(cls) is str:
-                cls = eval(cls)
-
+                cls = globals().get(cls)
             if cls and issubclass(cls, BaseModel):
                 # initialize a specific class_dict to empty to
                 # store instances for that particular class
@@ -94,11 +93,7 @@ class FileStorage:
         # extract that object's class name and id
         # and use that to search for it in the dictionary
         # of objects __objects.
-        obj = f"{obj.__class__.__name__}.{obj.id}"
 
-        try:
-            # then use del to delete that object.
-            del FileStorage.__objects[obj]
-        except KeyError:
-            # obj not found in __objects
-            print("Object not found in storage")
+        obj = f"{obj.__class__.__name__}.{obj.id}"
+        if obj in FileStorage.__objects:
+            FileStorage.__objects.pop(obj, None)
