@@ -144,19 +144,20 @@ class HBNBCommand(cmd.Cmd):
             name = param[0]
             value = param[1]
 
-            if value.startswith('"'):
-                # strip leading and trailing quotes
-                value = value.strip('"')
+            # Remove leading and trailing quotes
+            value = value.strip('"')
 
-                # replace all _ and /
-                value = value.replace("_", " ").replace('\"', '')
+            # replace all _ and \
+            value = value.replace("_", " ").replace('\"', '')
 
-            # if value contains a dot then it is a float.
-            elif '.' in value:
-                value = float(value)
-
-            else:
-                value = int(value)
+            try:
+                # if value contains a dot then it is a float.
+                if '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                pass
 
             # check if the instance has that attribute
             if hasattr(new_instance, name):
