@@ -120,3 +120,9 @@ class DBStorage:
         Session = scoped_session(sesh)
 
         self.__session = Session()
+
+    def close(self):
+        """
+        Closing the session.
+        """
+        self.__session.close()
