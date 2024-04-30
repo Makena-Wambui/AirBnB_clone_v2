@@ -19,7 +19,7 @@ class FileStorage:
         if cls is provided, we create a dictionary, class_dict.
         This will hold the filtered models.
         """
-        # if cls is provided eg all State:
+
         if cls:
             class_dict = {}
             if type(cls) is str:
