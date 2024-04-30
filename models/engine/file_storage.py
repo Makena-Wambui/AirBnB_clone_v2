@@ -21,26 +21,22 @@ class FileStorage:
         """
         # if cls is provided eg all State:
         if cls:
+            class_dict = {}
             if type(cls) is str:
                 cls = globals().get(cls)
-            if cls and issubclass(cls, BaseModel):
-                # initialize a specific class_dict to empty to
-                # store instances for that particular class
-                class_dict = {}
-
                 # iterate over the items (key, value pairs)
                 # in the __objects dictionary
                 for k, v in self.__objects.items():
                     # For each item, check whether the type of the value
                     # matches the provided cls type.
-                    if type(v) is cls:
+                    if cls == v.__class__ or cls == v.__class__.__name__:
                         # If the type of value matches the provided cls type,
                         # the method adds the item to class_dict.
                         class_dict[k] = v
 
                         # then return class_dict, which contains only the
                         # models of the specified class type.
-                        return class_dict
+                    return class_dict
 
         return FileStorage.__objects
 
@@ -95,5 +91,5 @@ class FileStorage:
         # of objects __objects.
 
         obj = f"{obj.__class__.__name__}.{obj.id}"
-        if obj in FileStorage.__objects:
-            FileStorage.__objects.pop(obj, None)
+        if obj in self.__objects:
+            del FileStorage.__objects
