@@ -51,13 +51,17 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         # lets change logic for removing this key:_sa_instance_state
-        d = {k: v for k, v in self.__dict__.items()
-             if k != '_sa_instance_state'}
-        d['__class__'] = str(self.__class__name)
+        d = self.__dict__.copy()
+
+        try:
+            del d["_sa_instance_state"]
+        except KeyError:
+            pass
+        d['__class__'] = str(self.__class__.__name__)
         d['created_at'] = self.created_at.isoformat()
         d['updated_at'] = self.updated_at.isoformat()
 
-        return dictionary
+        return d
 
     def delete(self):
         """
