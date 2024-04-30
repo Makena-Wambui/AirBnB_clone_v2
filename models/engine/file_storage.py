@@ -36,9 +36,9 @@ class FileStorage:
 
                         # then return class_dict, which contains only the
                         # models of the specified class type.
-                    return class_dict
+                return class_dict
 
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -92,4 +92,4 @@ class FileStorage:
 
         obj = f"{obj.__class__.__name__}.{obj.id}"
         if obj in self.__objects:
-            del FileStorage.__objects
+            del self.__objects[obj]
