@@ -87,7 +87,8 @@ class DBStorage:
         """
         adds the object to the current database session
         """
-        self.__session.add(obj)
+        merged_obj = self.__session.merge(obj)
+        self.__session.add(merged_obj)
 
     def save(self):
         """
