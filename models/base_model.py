@@ -52,14 +52,13 @@ class BaseModel:
         """Convert instance into dict format"""
         # lets change logic for removing this key:_sa_instance_state
         d = self.__dict__.copy()
-
-        if "_sa_instance_state" in d:
-            del d["_sa_instance_state"]
-
+        
+        for key in d.keys():
+            if key == "_sa_instance_state":
+                del d["_sa_instance_state"]
         d['__class__'] = str(self.__class__.__name__)
         d['created_at'] = self.created_at.isoformat()
         d['updated_at'] = self.updated_at.isoformat()
-
         return d
 
     def delete(self):
