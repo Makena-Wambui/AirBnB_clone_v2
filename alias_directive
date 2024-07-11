@@ -1,0 +1,78 @@
+Certainly! You can configure Nginx to serve content from a specific directory using the `alias` directive. Here's how you can update your Nginx configuration to serve the content of `/data/web_static/current/` when accessing `https://mydomainname.tech/hbnb_static`.
+
+### Steps to Update Nginx Configuration
+
+1. **Edit the Nginx Configuration File**:
+   Open your Nginx configuration file. This is usually located at `/etc/nginx/sites-available/default` or `/etc/nginx/nginx.conf` depending on your setup.
+
+   ```bash
+   sudo nano /etc/nginx/sites-available/default
+   ```
+
+2. **Add the Alias Configuration**:
+   Find the `server` block in your Nginx configuration file and add a `location` block for `hbnb_static` with the `alias` directive. It should look something like this:
+
+   ```nginx
+   server {
+       listen 80;
+       server_name mydomainname.tech;
+
+       location /hbnb_static {
+           alias /data/web_static/current/;
+           autoindex off;
+       }
+
+       # Other configurations...
+   }
+   ```
+
+   - The `location /hbnb_static` block tells Nginx to handle requests to `https://mydomainname.tech/hbnb_static`.
+   - The `alias /data/web_static/current/;` directive specifies the directory to serve files from.
+
+3. **Test the Nginx Configuration**:
+   Before restarting Nginx, test the configuration to make sure there are no syntax errors.
+
+   ```bash
+   sudo nginx -t
+   ```
+
+4. **Restart Nginx**:
+   If the test is successful, restart Nginx to apply the changes.
+
+   ```bash
+   sudo systemctl restart nginx
+   ```
+
+### Complete Example
+
+Here's a more complete example of what your Nginx configuration might look like:
+
+```nginx
+server {
+    listen 80;
+    server_name mydomainname.tech;
+
+    location /hbnb_static {
+        alias /data/web_static/current/;
+        autoindex off;
+    }
+
+    # Other configurations...
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+### Explanation
+
+- `server_name mydomainname.tech;`: Replace `mydomainname.tech` with your actual domain name.
+- `location /hbnb_static { ... }`: This block handles all requests to `https://mydomainname.tech/hbnb_static`.
+  - `alias /data/web_static/current/;`: Specifies the directory to serve static files from.
+  - `autoindex off;`: Disables directory listing.
+
+### Verify
+
+After updating and restarting Nginx, you can verify that the content is served correctly by navigating to `https://mydomainname.tech/hbnb_static` in your web browser.
+
+By following these steps, you should be able to configure Nginx to serve content from `/data/web_static/current/` using the `alias` directive.
