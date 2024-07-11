@@ -64,7 +64,6 @@ def do_pack():
     if result.succeeded:
         return archive_file  # return the created archive file
     else:
-        print("Compression failed.")
         return None
 
 
@@ -140,9 +139,7 @@ def do_deploy(archive_path):
         return True
 
     # except block to catch any errors/exceptions
-    except Exception as err:
-        print(err)
-        # Failure
+    except Exception:
         return False
 
 
