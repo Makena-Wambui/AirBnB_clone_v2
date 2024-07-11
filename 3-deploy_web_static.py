@@ -168,7 +168,3 @@ def deploy():
 
     # then we call do_deploy providing archive as arg and return its result
     return do_deploy(archive)
-
-
-# Finally we call deploy to handle the entire process
-deploy()
