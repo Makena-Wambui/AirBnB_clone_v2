@@ -40,23 +40,13 @@ def hbnb():
 
 
 @app.route("/c/<text>", strict_slashes=False)
-@app.route("/c", strict_slashes=False)
+# @app.route("/c", strict_slashes=False)
 def c_text(text="is cool"):
     """
     Func: c_text
     Prints "C + text"
     """
     return "C {}".format(text.replace("_", " "))
-
-
-@app.route("/python/<text>", strict_slashes=False)
-@app.route("/python", strict_slashes=False)
-def python(text="is cool"):
-    """
-    Func: python
-    Prints "Python + text"
-    """
-    return "Python {}".format(text.replace("_", " "))
 
 
 if __name__ == "__main__":
