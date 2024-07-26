@@ -17,11 +17,19 @@ app = Flask(__name__)
 
 @app.route("/", strict_slashes=False)
 def hello():
+    """
+    function: hello
+    Prints Hello HBNB!
+    """
     return f"Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
 def hbnb():
+    """
+    Function: hbnb
+    Prints HBNB
+    """
     return f"HBNB"
 
 
