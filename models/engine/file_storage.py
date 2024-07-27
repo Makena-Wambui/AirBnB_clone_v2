@@ -19,26 +19,17 @@ class FileStorage:
         if cls is provided, we create a dictionary, class_dict.
         This will hold the filtered models.
         """
-
-        if cls:
-            class_dict = {}
+        if cls is not None:
             if type(cls) is str:
-                cls = globals().get(cls)
-                # iterate over the items (key, value pairs)
-                # in the __objects dictionary
-                for k, v in self.__objects.items():
-                    # For each item, check whether the type of the value
-                    # matches the provided cls type.
-                    if cls == v.__class__ or cls == v.__class__.__name__:
-                        # If the type of value matches the provided cls type,
-                        # the method adds the item to class_dict.
-                        class_dict[k] = v
-
-                        # then return class_dict, which contains only the
-                        # models of the specified class type.
-                return class_dict
-
-        return self.__objects
+                cls = eval(cls)
+            class_dict = {}
+            for key, value in self.__objects.items():
+                # if self.__class__.__name__ == cls:
+                if type(value) is cls:
+                    class_dict[key] = value
+            return class_dict
+        else:
+            return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
